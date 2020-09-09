@@ -1,6 +1,7 @@
 package no.ntnu.backend.pentbrukt.Entity;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -25,10 +26,11 @@ public class Listing {
     @Column(name = "listingprice")
     private int listingPrice;
 
-    @Column(name = "listingseller")
-    private String listingSeller;
+/*    @Column(name = "listingseller")
+    private String listingSeller;*/
 
     @Column(name = "listingpublished")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate listingPublished;
 
     public Listing(){
@@ -67,13 +69,13 @@ public class Listing {
         this.listingPrice = listingPrice;
     }
 
-    public String getListingSeller() {
+/*    public String getListingSeller() {
         return listingSeller;
     }
 
     public void setListingSeller(String listingSeller) {
         this.listingSeller = listingSeller;
-    }
+    }*/
 
     public LocalDate getListingPublished() {
         return listingPublished;
