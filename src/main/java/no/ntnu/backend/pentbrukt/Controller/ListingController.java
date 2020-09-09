@@ -31,7 +31,6 @@ public class ListingController {
     @GetMapping("listings/{id}")
     public ResponseEntity<Listing> getListingById(@PathVariable(value = "id") Long listingid)
         throws ResourceNotFoundException {
-
         // Lookup
         Listing listing = listingRepository.findById(listingid)
                 .orElseThrow(() -> new ResourceNotFoundException("No listings matching ' " + listingid + " '"));
