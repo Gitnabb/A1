@@ -1,6 +1,6 @@
-package Repository;
+package no.ntnu.backend.pentbrukt.Repository;
 
-import Entity.Listing;
+import no.ntnu.backend.pentbrukt.Entity.Listing;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,4 +1,4 @@
-package Exception;
+package no.ntnu.backend.pentbrukt.Exception;
 
 import java.util.Date;
 

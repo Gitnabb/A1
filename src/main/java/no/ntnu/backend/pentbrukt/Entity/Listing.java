@@ -1,4 +1,4 @@
-package Entity;
+package no.ntnu.backend.pentbrukt.Entity;
 
 
 import lombok.AllArgsConstructor;

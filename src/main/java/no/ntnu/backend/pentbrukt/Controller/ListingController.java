@@ -1,8 +1,8 @@
-package Controller;
+package no.ntnu.backend.pentbrukt.Controller;
 
-import Entity.Listing;
-import Exception.ResourceNotFoundException;
-import Repository.ListingRepository;
+import no.ntnu.backend.pentbrukt.Entity.Listing;
+import no.ntnu.backend.pentbrukt.Exception.ResourceNotFoundException;
+import no.ntnu.backend.pentbrukt.Repository.ListingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -13,14 +13,14 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/")
+@RequestMapping("api")
 public class ListingController {
 
     @Autowired
     private ListingRepository listingRepository;
 
     // Get all listings
-    @GetMapping("/listings")
+    @GetMapping("listings")
     public List<Listing> getAllListings(){
 
         return this.listingRepository.findAll();
@@ -28,7 +28,7 @@ public class ListingController {
     }
 
     // Get listing by listing id
-    @GetMapping("/listings/{id}")
+    @GetMapping("listings/{id}")
     public ResponseEntity<Listing> getListingById(@PathVariable(value = "id") Long listingid)
         throws ResourceNotFoundException {
 
