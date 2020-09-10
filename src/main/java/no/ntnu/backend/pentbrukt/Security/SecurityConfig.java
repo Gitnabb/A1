@@ -36,7 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable() // TODO: WILL GO THROUGH
                 .authorizeRequests()
                 .antMatchers("/", "index","/css/*", "/js/*").permitAll()
-                .antMatchers("/api/**").hasRole(USER.name())
+                //.antMatchers("/api/**").hasRole(USER.name())
 /*                .antMatchers(HttpMethod.DELETE,"/api/**").hasAuthority(USER.name())
                 .antMatchers(HttpMethod.POST,"/api/**").hasAuthority(USER.name())
                 .antMatchers(HttpMethod.PUT,"/api/**").hasAuthority(USER.name())
@@ -71,7 +71,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .build();
 
 
-
-        return new InMemoryUserDetailsManager(userloggedin, user);
+        return new InMemoryUserDetailsManager(
+                userloggedin,
+                user);
     }
 }
