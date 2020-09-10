@@ -22,7 +22,6 @@ public class ListingController {
 
     // Get all listings
     @GetMapping("listings")
-    @PreAuthorize("hasAnyRole('ROLE_USERLOGGEDIN', 'ROLE_USER')") // Anyone can access all listings
     public List<Listing> getAllListings(){
 
         return this.listingRepository.findAll();
@@ -44,7 +43,6 @@ public class ListingController {
     //hasRole, HasAnyRole, hasAuthority, hasAnyAuthority
 
     @PostMapping("listings")
-    @PreAuthorize("hasAuthority('userloggedin:write')")
     public Listing createListing(@RequestBody Listing listing){
         return this.listingRepository.save(listing);
     }
@@ -52,7 +50,6 @@ public class ListingController {
     // Update a listing
 
     @PutMapping("listings/{id}")
-    @PreAuthorize("hasAuthority('userloggedin:write')")
     public ResponseEntity<Listing> updateListing
             (@PathVariable(value = "id") Long listingid,
              @Validated @RequestBody Listing listingInfo) throws ResourceNotFoundException {
@@ -69,7 +66,6 @@ public class ListingController {
     }
     // Delete a listing
     @DeleteMapping("listings/{id}")
-    @PreAuthorize("hasAuthority('userloggedin:write')")
     public Map<String, Boolean> deleteListing(@PathVariable(value = "id") Long listingid) throws ResourceNotFoundException{
 
         // Lookup

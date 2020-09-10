@@ -49,11 +49,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 
-    // USER AND ADMIN IS THE SAME, DO NOT NEED ADMIN FOR THIS REALLY.
-
-
-    // "USER" represents a user that is not logged in, allthough in this case
-    // credentials are needed to access (only) the GET method(s).
+    // "USER" represents a user that has limited access. Can only use GET method. Essentially, a
+    // non-logged in user.
 
     // "USERLOGGEDIN" represents a user that is of course logged in, and is granted full access to
     // PUT POST DELETE methods.

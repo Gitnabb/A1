@@ -12,7 +12,7 @@ import static no.ntnu.backend.pentbrukt.Security.UserPermissionsConfig.*;
 public enum UserRoleConfig {
 
     USER(Sets.newHashSet()),
-    USERLOGGEDIN(Sets.newHashSet(USER_READ, USER_WRITE, LISTING_READ, LISTING_WRITE));
+    USERLOGGEDIN(Sets.newHashSet(LISTING_READ, LISTING_WRITE));
 
     private final Set<UserPermissionsConfig> permissions;
 
