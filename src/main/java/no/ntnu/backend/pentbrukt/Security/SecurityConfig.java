@@ -3,7 +3,6 @@ package no.ntnu.backend.pentbrukt.Security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -33,14 +32,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http
-                .csrf().disable() // TODO: WILL GO THROUGH
+                .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/", "index","/css/*", "/js/*").permitAll()
-                //.antMatchers("/api/**").hasRole(USER.name())
-/*                .antMatchers(HttpMethod.DELETE,"/api/**").hasAuthority(USER.name())
-                .antMatchers(HttpMethod.POST,"/api/**").hasAuthority(USER.name())
-                .antMatchers(HttpMethod.PUT,"/api/**").hasAuthority(USER.name())
-                .antMatchers(HttpMethod.GET,"/api/**").hasAnyRole(USER.name())*/
+                //.antMatchers("/api/**").hasAnyRole(USER.name(), USERLOGGEDIN.name())
                 .anyRequest()
                 .authenticated()
                 .and()

@@ -6,6 +6,9 @@ import no.ntnu.backend.pentbrukt.Repository.ListingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,11 +49,15 @@ public class ListingController {
     @PostMapping("listings")
     @PreAuthorize("hasAuthority('listing:write')")
     public Listing createListing(@RequestBody Listing listing){
+
+       /* String auth = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        listing.setListingSeller(auth);*/
+
         return this.listingRepository.save(listing);
     }
 
 
-    // Update a listing
+    // Update a listing TODO: CHECK LOGIN INFO - COMPARE WITH LISTING INFO - TO BE ABLE TO EDIT LISTING
     @PutMapping("listings/{id}")
     @PreAuthorize("hasAuthority('listing:write')")
     public ResponseEntity<Listing> updateListing
@@ -69,7 +76,7 @@ public class ListingController {
         return ResponseEntity.ok(this.listingRepository.save(listing));
 
     }
-    // Delete a listing
+    // Delete a listing TODO: CHECK LOGIN INFO - COMPARE WITH LISTING INFO - TO BE ABLE TO DELETE
     @DeleteMapping("listings/{id}")
     @PreAuthorize("hasAuthority('listing:write')")
     public Map<String, Boolean> deleteListing(@PathVariable(value = "id") Long listingid) throws ResourceNotFoundException{

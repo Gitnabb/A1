@@ -23,9 +23,6 @@ public class Listing {
     @Column(name = "listingdesc")
     private String listingDesc;
 
-    @Column(name = "listingseller")
-    private long listingsellerid;
-
     @Column(name = "listingprice")
     private int listingPrice;
 
