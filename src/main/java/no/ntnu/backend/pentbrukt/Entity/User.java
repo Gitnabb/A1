@@ -6,23 +6,24 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
+@Table(name = "users", schema = "public")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long userid;
 
-    @Column(nullable = false)
+    @Column(name = "username")
     private String userName; // THIS IS EMAIL!
+
+    @Column(name = "password")
+    private String userPassword;
 
     @Column(name = "firstname")
     private String userFirstName;
 
     @Column(name = "lastname")
     private String userLastName;
-
-    @Column(name = "password")
-    private String userPassword;
 
     @Column(name = "joined")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
@@ -32,11 +33,13 @@ public class User {
 
     }
 
-    public User(String userName, String userFirstName, String userLastName, String userPassword) {
-        this.userName = userName;
+    public User(String username, String userPassword, String userFirstName, String userLastName){
+
+        this.userName = username;
+        this.userPassword = userPassword;
         this.userFirstName = userFirstName;
         this.userLastName = userLastName;
-        this.userPassword = userPassword;
+
     }
 
     public long getUserid() {

@@ -38,12 +38,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "index","/css/*", "/js/*").permitAll()
-                //.antMatchers("/api/**").hasAnyRole(USER.name(), USERLOGGEDIN.name())
                 .anyRequest()
                 .authenticated()
                 .and()
-                .httpBasic();
+                .formLogin().loginProcessingUrl("/login").defaultSuccessUrl("/");
 
     }
 
