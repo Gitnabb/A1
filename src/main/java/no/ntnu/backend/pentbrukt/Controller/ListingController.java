@@ -1,6 +1,7 @@
 package no.ntnu.backend.pentbrukt.Controller;
 
 import no.ntnu.backend.pentbrukt.Entity.Listing;
+import no.ntnu.backend.pentbrukt.Entity.User;
 import no.ntnu.backend.pentbrukt.Exception.ResourceNotFoundException;
 import no.ntnu.backend.pentbrukt.Repository.ListingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class ListingController {
     // Get all listings
     @GetMapping("listings")
     @PreAuthorize("hasAnyRole('ROLE_USERLOGGEDIN', 'ROLE_USER')")
-    public List<Listing> getAllListings(){
+    public List<Listing> getAllListings() {
 
         return this.listingRepository.findAll();
 
@@ -34,13 +35,14 @@ public class ListingController {
 
     // Get listing by listing id
     @GetMapping("listings/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_USERLOGGEDIN', 'ROLE_USER')")
     public ResponseEntity<Listing> getListingById(@PathVariable(value = "id") Long listingid)
-        throws ResourceNotFoundException {
+            throws ResourceNotFoundException {
         // Lookup
         Listing listing = listingRepository.findById(listingid)
                 .orElseThrow(() -> new ResourceNotFoundException("No listings matching ' " + listingid + " '"));
 
-                return ResponseEntity.ok().body(listing);
+        return ResponseEntity.ok().body(listing);
     }
 
     // Create a listing
@@ -48,10 +50,12 @@ public class ListingController {
 
     @PostMapping("listings")
     @PreAuthorize("hasAuthority('listing:write')")
-    public Listing createListing(@RequestBody Listing listing){
+    public Listing createListing(@RequestBody Listing listing) {
 
-       /* String auth = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-        listing.setListingSeller(auth);*/
+       /* Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUser = authentication.getPrincipal().toString(); // gets the credentials used for login, email..
+
+        */
 
         return this.listingRepository.save(listing);
     }
@@ -62,8 +66,8 @@ public class ListingController {
     @PreAuthorize("hasAuthority('listing:write')")
     public ResponseEntity<Listing> updateListing
 
-            (@PathVariable(value = "id") Long listingid,
-             @Validated @RequestBody Listing listingInfo) throws ResourceNotFoundException {
+    (@PathVariable(value = "id") Long listingid,
+     @Validated @RequestBody Listing listingInfo) throws ResourceNotFoundException {
 
         // Lookup
         Listing listing = listingRepository.findById(listingid)
@@ -76,10 +80,11 @@ public class ListingController {
         return ResponseEntity.ok(this.listingRepository.save(listing));
 
     }
+
     // Delete a listing TODO: CHECK LOGIN INFO - COMPARE WITH LISTING INFO - TO BE ABLE TO DELETE
     @DeleteMapping("listings/{id}")
     @PreAuthorize("hasAuthority('listing:write')")
-    public Map<String, Boolean> deleteListing(@PathVariable(value = "id") Long listingid) throws ResourceNotFoundException{
+    public Map<String, Boolean> deleteListing(@PathVariable(value = "id") Long listingid) throws ResourceNotFoundException {
 
         // Lookup
         Listing listing = listingRepository.findById(listingid)

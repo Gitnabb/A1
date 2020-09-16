@@ -1,19 +1,19 @@
 package no.ntnu.backend.pentbrukt.Entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "users")
-@AllArgsConstructor
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long userid;
+
+    @Column(nullable = false)
+    private String userName; // THIS IS EMAIL!
 
     @Column(name = "firstname")
     private String userFirstName;
@@ -21,18 +21,22 @@ public class User {
     @Column(name = "lastname")
     private String userLastName;
 
-    @Column(name = "email")
-    private String userEmail;
-
     @Column(name = "password")
-    private String password;
+    private String userPassword;
 
     @Column(name = "joined")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate userJoined;
 
-    public User(){
-        super();
+    protected User(){
+
+    }
+
+    public User(String userName, String userFirstName, String userLastName, String userPassword) {
+        this.userName = userName;
+        this.userFirstName = userFirstName;
+        this.userLastName = userLastName;
+        this.userPassword = userPassword;
     }
 
     public long getUserid() {
@@ -59,20 +63,28 @@ public class User {
         this.userLastName = userLastName;
     }
 
-    public String getUserEmail() {
-        return userEmail;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getUserPassword() {
+        return userPassword;
+    }
+
+    public void setUserPassword(String userPassword) {
+        this.userPassword = userPassword;
     }
 
     public String getPassword() {
-        return password;
+        return userPassword;
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.userPassword = userPassword;
     }
 
     public LocalDate getUserJoined() {
