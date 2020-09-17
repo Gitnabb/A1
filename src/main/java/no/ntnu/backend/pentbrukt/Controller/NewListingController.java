@@ -5,17 +5,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/")
-public class HomeController {
+@RequestMapping("new-listing")
+public class NewListingController {
+
     @GetMapping("index")
-    public String index(){
-        return "index";
-    }
-
-
-    @GetMapping("login")
-    public String login(){
-        return "loginpage";
+    public String listing(){
+        return "/new-listing/index";
     }
 
 }

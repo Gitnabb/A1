@@ -1,9 +1,15 @@
 package no.ntnu.backend.pentbrukt.Entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+//import com.fasterxml.jackson.annotation.JsonFormat;
+
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users", schema = "public")
@@ -26,19 +32,27 @@ public class User {
     private String userLastName;
 
     @Column(name = "joined")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    //@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate userJoined;
+
+    @Column(name = "roles")
+    private String roles;
+
+    @Column(name = "permissions")
+    private String permissions;
 
     protected User(){
 
     }
 
-    public User(String username, String userPassword, String userFirstName, String userLastName){
+    public User(String username, String userPassword, String userFirstName, String userLastName, String roles, String permissions){
 
         this.userName = username;
         this.userPassword = userPassword;
         this.userFirstName = userFirstName;
         this.userLastName = userLastName;
+        this.roles = roles;
+        this.permissions = permissions;
 
     }
 
@@ -97,4 +111,35 @@ public class User {
     public void setUserJoined(LocalDate userJoined) {
         this.userJoined = userJoined;
     }
+
+    public String getRoles() {
+        return roles;
+    }
+
+    public void setRoles(String roles) {
+        this.roles = roles;
+    }
+
+    public String getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(String permissions) {
+        this.permissions = permissions;
+    }
+
+    public List<String> getRoleList(){
+        if(this.roles.length() > 0){
+            return Arrays.asList(this.roles.split(","));
+        }
+        return new ArrayList<>();
+    }
+
+    public List<String> getPermissionsList(){
+        if(this.permissions.length() > 0){
+            return Arrays.asList(this.permissions.split(","));
+        }
+        return new ArrayList<>();
+    }
+
 }

@@ -38,13 +38,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .anyRequest()
-                .authenticated()
+                .antMatchers("/index.html").permitAll()
+                .antMatchers("/profile/index", "/new-listing/index").authenticated()
                 .and()
-                .formLogin().loginProcessingUrl("/login").defaultSuccessUrl("/");
+                .formLogin()
+                .loginPage("/login")
+                .loginProcessingUrl("/login").defaultSuccessUrl("/");
 
     }
-
     // Authentication provider
     @Bean
     DaoAuthenticationProvider authenticationProvider(){

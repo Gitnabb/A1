@@ -26,7 +26,7 @@ public class ListingController {
 
     // Get all listings
     @GetMapping("listings")
-    @PreAuthorize("hasAnyRole('ROLE_USERLOGGEDIN', 'ROLE_USER')")
+    @PreAuthorize("permitAll()")
     public List<Listing> getAllListings() {
 
         return this.listingRepository.findAll();

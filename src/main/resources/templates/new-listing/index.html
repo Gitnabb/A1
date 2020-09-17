@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="fragments.html :: headerfiles"></head>
+<body>
+<header th:insert="fragments.html :: nav"></header>
+<!-- Page content goes here -->
+<div class="container">
+    <div class="jumbotron">
+        <h1 class="display-4">Legg til ny annonse</h1>
+        <hr class="my-4">
+        <p class="lead">
+        <form action="/action_page.php">
+            <label for="fname">Tittel</label>
+            <input type="text" id="fname" name="firstname" placeholder="Tittel">
+
+            <label for="lname">Beskrivelse</label>
+            <input type="text" id="lname" name="lastname" placeholder="Beskrivelse">
+
+            <label for="price">Pris</label>
+            <input type="number" id="price" name="price" placeholder="Pris">
+
+            <label for="used">Tilstand</label>
+            <select id="used" name="used">
+                <option value="used1">Ny</option>
+                <option value="used2">Brukt</option>
+            </select>
+
+            <input type="submit" value="Submit">
+        </form>
+        </p>
+    </div>
+</div>
+</body>
+</html>

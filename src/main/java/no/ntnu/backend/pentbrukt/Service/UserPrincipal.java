@@ -2,6 +2,7 @@ package no.ntnu.backend.pentbrukt.Service;
 
 import no.ntnu.backend.pentbrukt.Entity.User;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
@@ -18,6 +19,20 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> authorities = new ArrayList<>();
+
+        // Get list of permissions
+        this.user.getPermissionsList().forEach(permission -> {
+            GrantedAuthority authority = new SimpleGrantedAuthority(permission);
+            authorities.add(authority);
+        });
+
+        // Get list of roles
+        this.user.getRoleList().forEach(role -> {
+            GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + role);
+            authorities.add(authority);
+        });
+
         return null;
     }
 
