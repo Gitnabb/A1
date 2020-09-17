@@ -35,7 +35,7 @@ public class ListingController {
 
     // Get listing by listing id
     @GetMapping("listings/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_USERLOGGEDIN', 'ROLE_USER')")
+    @PreAuthorize("permitAll()")
     public ResponseEntity<Listing> getListingById(@PathVariable(value = "id") Long listingid)
             throws ResourceNotFoundException {
         // Lookup
