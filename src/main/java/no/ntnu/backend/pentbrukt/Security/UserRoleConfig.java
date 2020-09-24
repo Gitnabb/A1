@@ -1,3 +1,4 @@
+/*
 package no.ntnu.backend.pentbrukt.Security;
 
 import com.google.common.collect.Sets;
@@ -33,3 +34,4 @@ public enum UserRoleConfig {
         return permissions;
     }
 }
+*/

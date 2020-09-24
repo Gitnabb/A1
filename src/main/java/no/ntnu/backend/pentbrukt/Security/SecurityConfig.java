@@ -17,10 +17,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private UserPrincipalDetailsService userPrincipalDetailsService;
+    private final UserPrincipalDetailsService userPrincipalDetailsService;
     private final PasswordEncoder passwordEncoder;
 
-    @Autowired
     public SecurityConfig(UserPrincipalDetailsService userPrincipalDetailsService, PasswordEncoder passwordEncoder) {
         this.userPrincipalDetailsService = userPrincipalDetailsService;
         this.passwordEncoder = passwordEncoder;
@@ -28,7 +27,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception{
+    protected void configure(AuthenticationManagerBuilder auth) {
         auth.authenticationProvider(authenticationProvider());
     }
 
@@ -38,8 +37,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/index.html").permitAll()
-                .antMatchers("/profile/index", "/new-listing/index").authenticated()
+                .antMatchers("/index.html", "/", "/css/*", "/js/*").permitAll()
+                .antMatchers("/profile/**", "/new-listing/**").authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login")

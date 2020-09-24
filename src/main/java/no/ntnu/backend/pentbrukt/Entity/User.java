@@ -41,11 +41,11 @@ public class User {
     @Column(name = "permissions")
     private String permissions;
 
-    protected User(){
+    protected User() {
 
     }
 
-    public User(String username, String userPassword, String userFirstName, String userLastName, String roles, String permissions){
+    public User(String username, String userPassword, String userFirstName, String userLastName, String roles, String permissions) {
 
         this.userName = username;
         this.userPassword = userPassword;
@@ -128,15 +128,15 @@ public class User {
         this.permissions = permissions;
     }
 
-    public List<String> getRoleList(){
-        if(this.roles.length() > 0){
+    public List<String> getRoleList() {
+        if (this.roles.length() > 0) {
             return Arrays.asList(this.roles.split(","));
         }
         return new ArrayList<>();
     }
 
-    public List<String> getPermissionsList(){
-        if(this.permissions.length() > 0){
+    public List<String> getPermissionsList() {
+        if (this.permissions.length() > 0) {
             return Arrays.asList(this.permissions.split(","));
         }
         return new ArrayList<>();

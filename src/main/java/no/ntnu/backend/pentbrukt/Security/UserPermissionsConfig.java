@@ -1,3 +1,4 @@
+/*
 package no.ntnu.backend.pentbrukt.Security;
 
 public enum UserPermissionsConfig {
@@ -17,3 +18,4 @@ public enum UserPermissionsConfig {
         return permission;
     }
 }
+*/

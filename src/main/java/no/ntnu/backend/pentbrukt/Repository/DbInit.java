@@ -8,12 +8,11 @@ import org.springframework.stereotype.Service;
 import java.util.Arrays;
 import java.util.List;
 
-import static no.ntnu.backend.pentbrukt.Security.UserRoleConfig.USERLOGGEDIN;
 
 @Service
 public class DbInit implements CommandLineRunner {
-    private UserRepository userRepository;
-    private PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public DbInit(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
@@ -29,7 +28,7 @@ public class DbInit implements CommandLineRunner {
 
         // test users
 
-        User loggedInUser = new User("kjetilhammerseth@gmail.com", passwordEncoder.encode("password123"), "kjetil", "hammerseth", "LOGGEDINUSER", "ACCESS");
+        User loggedInUser = new User("kjetilhammerseth@gmail.com", passwordEncoder.encode("password123"), "kjetil", "hammerseth", "USERLOGGEDIN", "ACCESS");
         User testUser = new User("test", passwordEncoder.encode("password123"), "test", "test", "USER", "");
 
         List<User> users = Arrays.asList(loggedInUser, testUser);

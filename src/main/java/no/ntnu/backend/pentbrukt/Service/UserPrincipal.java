@@ -13,7 +13,7 @@ public class UserPrincipal implements UserDetails {
 
     private User user;
 
-    public UserPrincipal(User user){
+    public UserPrincipal(User user) {
         this.user = user;
     }
 
@@ -21,19 +21,18 @@ public class UserPrincipal implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
 
-        // Get list of permissions
-        this.user.getPermissionsList().forEach(permission -> {
-            GrantedAuthority authority = new SimpleGrantedAuthority(permission);
+        // Get list of permissions (name)
+        this.user.getPermissionsList().forEach(p -> {
+            GrantedAuthority authority = new SimpleGrantedAuthority(p);
             authorities.add(authority);
         });
 
-        // Get list of roles
-        this.user.getRoleList().forEach(role -> {
-            GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + role);
+        // Get list of roles (ROLE_name)
+        this.user.getRoleList().forEach(r -> {
+            GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + r);
             authorities.add(authority);
         });
-
-        return null;
+        return authorities;
     }
 
     @Override
