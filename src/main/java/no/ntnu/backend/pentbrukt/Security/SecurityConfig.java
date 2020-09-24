@@ -1,7 +1,7 @@
 package no.ntnu.backend.pentbrukt.Security;
 
+import no.ntnu.backend.pentbrukt.Repository.UserRepository;
 import no.ntnu.backend.pentbrukt.Service.UserPrincipalDetailsService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -10,7 +10,9 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
 
 @Configuration
 @EnableWebSecurity
@@ -19,10 +21,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserPrincipalDetailsService userPrincipalDetailsService;
     private final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
 
-    public SecurityConfig(UserPrincipalDetailsService userPrincipalDetailsService, PasswordEncoder passwordEncoder) {
+
+    public SecurityConfig(UserPrincipalDetailsService userPrincipalDetailsService, PasswordEncoder passwordEncoder, UserRepository userRepository) {
         this.userPrincipalDetailsService = userPrincipalDetailsService;
         this.passwordEncoder = passwordEncoder;
+        this.userRepository = userRepository;
+
     }
 
 
@@ -36,18 +42,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http
                 .csrf().disable()
-                .authorizeRequests()
-                .antMatchers("/index.html", "/", "/css/*", "/js/*").permitAll()
-                .antMatchers("/profile/**", "/new-listing/**").authenticated()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .formLogin()
-                .loginPage("/login")
-                .loginProcessingUrl("/login").defaultSuccessUrl("/");
+                // JWT FILTERS (Authentication, Authorization)
+                .addFilter(new JwtAuthenticationFilter(authenticationManager()))
+                .addFilter(new JwtAuthorizationFilter(authenticationManager(), this.userRepository))
+                .authorizeRequests()
+                // Restrictions
+                .antMatchers("/login").permitAll()
+                .antMatchers("/api/listings").hasRole("USERLOGGEDIN");
+
 
     }
+
     // Authentication provider
     @Bean
-    DaoAuthenticationProvider authenticationProvider(){
+    DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder);
         daoAuthenticationProvider.setUserDetailsService(this.userPrincipalDetailsService);

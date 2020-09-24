@@ -25,7 +25,7 @@ public class ListingController {
 
     // Get all listings
     @GetMapping("listings")
-    @PreAuthorize("permitAll()")
+    //@PreAuthorize("permitAll()")
     public List<Listing> getAllListings() {
 
         return this.listingRepository.findAll();
@@ -34,7 +34,7 @@ public class ListingController {
 
     // Get listing by listing id
     @GetMapping("listings/{id}")
-    @PreAuthorize("permitAll()")
+    //@PreAuthorize("permitAll()")
     public ResponseEntity<Listing> getListingById(@PathVariable(value = "id") Long listingid)
             throws ResourceNotFoundException {
         // Lookup
