@@ -62,7 +62,6 @@ public class ListingController {
 
     // Update a listing TODO: CHECK LOGIN INFO - COMPARE WITH LISTING INFO - TO BE ABLE TO EDIT LISTING
     @PutMapping("listings/{id}")
-    @PreAuthorize("hasAuthority('listing:write')")
     public ResponseEntity<Listing> updateListing
 
     (@PathVariable(value = "id") Long listingid,
@@ -82,7 +81,6 @@ public class ListingController {
 
     // Delete a listing TODO: CHECK LOGIN INFO - COMPARE WITH LISTING INFO - TO BE ABLE TO DELETE
     @DeleteMapping("listings/{id}")
-    @PreAuthorize("hasAuthority('listing:write')")
     public Map<String, Boolean> deleteListing(@PathVariable(value = "id") Long listingid) throws ResourceNotFoundException {
 
         // Lookup
