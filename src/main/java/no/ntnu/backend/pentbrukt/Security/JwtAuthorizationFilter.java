@@ -44,11 +44,15 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         // If there is a header, try to get the user principal from the database and authorize
         Authentication authentication = getUsernamePasswordAuthentication(request);
         SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        chain.doFilter(request, response);
+
     }
+
 
     private Authentication getUsernamePasswordAuthentication(HttpServletRequest request) {
         String token = request.getHeader(JwtProperties.HEADER_STRING)
-                .replace(JwtProperties.TOKEN_PREFIX, "");
+                .replace(JwtProperties.TOKEN_PREFIX,"");
         if (token != null) {
             // validate token
             String userName = JWT.require(HMAC512(JwtProperties.SECRETCODE.getBytes()))
@@ -64,6 +68,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
                 UserPrincipal userPrincipal = new UserPrincipal(user);
                 UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userName, null, userPrincipal.getAuthorities());
                 return auth;
+
             }
             return null;
         }

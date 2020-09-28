@@ -2,14 +2,11 @@ package no.ntnu.backend.pentbrukt.Entity;
 
 //import com.fasterxml.jackson.annotation.JsonFormat;
 
-import org.springframework.security.core.GrantedAuthority;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "users", schema = "public")
