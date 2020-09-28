@@ -16,7 +16,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationEn
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+//@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserPrincipalDetailsService userPrincipalDetailsService;
@@ -50,7 +50,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 // Restrictions
                 .antMatchers("/login").permitAll()
-                .antMatchers("/api/listings").hasRole("USERLOGGEDIN");
+                .antMatchers("/api/listings").hasRole("USERLOGGEDIN")
+                .anyRequest().authenticated();
 
 
     }

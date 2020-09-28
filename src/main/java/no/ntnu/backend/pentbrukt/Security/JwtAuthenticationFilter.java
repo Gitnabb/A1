@@ -22,7 +22,6 @@ import java.util.Date;
 
 import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 import static no.ntnu.backend.pentbrukt.Security.JwtProperties.SECRETCODE;
-import static org.springframework.security.config.Elements.JWT;
 
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
@@ -58,7 +57,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     }
 
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) /*throws IOException, ServletException*/ {
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
 
         //Get Principal
         UserPrincipal userPrincipal = (UserPrincipal) authResult.getPrincipal();

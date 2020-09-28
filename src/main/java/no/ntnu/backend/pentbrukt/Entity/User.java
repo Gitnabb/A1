@@ -16,10 +16,10 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long userid;
 
-    @Column(name = "username")
+    @Column(name = "username", nullable = false)
     private String username; // THIS IS EMAIL!
 
-    @Column(name = "password")
+    @Column(name = "password", nullable = false)
     private String password;
 
     @Column(name = "firstname")
@@ -33,11 +33,12 @@ public class User {
     private LocalDate userJoined;
 
     @Column(name = "roles")
-    private String roles;
+    private String roles = "";
 
     @Column(name = "permissions")
-    private String permissions;
+    private String permissions = "";
 
+    @Column(name = "active")
     private int active;
 
     protected User() {
@@ -116,7 +117,7 @@ public class User {
         this.permissions = permissions;
     }
 
-    public int getActive() {
+    public int isActive() {
         return active;
     }
 
