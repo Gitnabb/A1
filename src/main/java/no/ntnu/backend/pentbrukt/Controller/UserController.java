@@ -1,27 +1,29 @@
 package no.ntnu.backend.pentbrukt.Controller;
 
 
-import no.ntnu.backend.pentbrukt.Entity.Listing;
 import no.ntnu.backend.pentbrukt.Entity.User;
 import no.ntnu.backend.pentbrukt.Exception.ResourceNotFoundException;
 import no.ntnu.backend.pentbrukt.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import sun.security.util.Password;
 
-import java.util.Arrays;
 import java.util.List;
 
 @RestController
-@RequestMapping("api")
+@RequestMapping("api/users/")
+@CrossOrigin
 public class UserController {
 
     @Autowired
     private UserRepository userRepository;
+    private PasswordEncoder passwordEncoder;
 
     // Get all users
-    @GetMapping("users")
-    public List<User> getAllUsers(){
+    @GetMapping("get-all-users")
+    public List<User> getAllUsers() {
 
         return this.userRepository.findAll();
 
@@ -39,10 +41,13 @@ public class UserController {
     }
 
     // Register a user
+    @PostMapping("new-user")
+    public User registerUser(@RequestBody User user) {
 
-    @PostMapping("users")
-    public User registerUser(@RequestBody User user){
+        System.out.println(user.getFirstname() + " registered!");
         return this.userRepository.save(user);
+
+
     }
 
 }

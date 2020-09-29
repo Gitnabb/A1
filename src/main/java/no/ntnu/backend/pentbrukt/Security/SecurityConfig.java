@@ -4,6 +4,7 @@ import no.ntnu.backend.pentbrukt.Repository.UserRepository;
 import no.ntnu.backend.pentbrukt.Service.UserPrincipalDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -41,6 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http
+
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
@@ -49,10 +51,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilter(new JwtAuthorizationFilter(authenticationManager(), this.userRepository))
                 .authorizeRequests()
                 // Restrictions
-                .antMatchers("/login").permitAll()
-                .antMatchers("/api/listings").hasRole("USERLOGGEDIN")
+                .antMatchers("/login", "/api/listings/get-All-Listings").permitAll()
+                .antMatchers("/api/listings/new-listing").hasRole("USERLOGGEDIN")
+                .antMatchers(HttpMethod.POST, "/api/users/new-user").permitAll()
                 .anyRequest().authenticated();
-
 
     }
 

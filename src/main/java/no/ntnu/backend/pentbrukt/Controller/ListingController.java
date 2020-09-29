@@ -4,7 +4,6 @@ import no.ntnu.backend.pentbrukt.Entity.Listing;
 import no.ntnu.backend.pentbrukt.Exception.ResourceNotFoundException;
 import no.ntnu.backend.pentbrukt.Repository.ListingRepository;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("api")
+@RequestMapping("api/listings/")
 @CrossOrigin
 public class ListingController {
 
@@ -24,7 +23,7 @@ public class ListingController {
     }
 
     // Get all listings
-    @GetMapping("listings")
+    @GetMapping("get-all-listings")
     //@PreAuthorize("permitAll()")
     public List<Listing> getAllListings() {
 
@@ -48,7 +47,7 @@ public class ListingController {
     // Create a listing
     //hasRole, HasAnyRole, hasAuthority, hasAnyAuthority
 
-    @PostMapping("listings")
+    @PostMapping("new-listing")
     public Listing createListing(@RequestBody Listing listing) {
 
        /* Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -56,6 +55,7 @@ public class ListingController {
 
         */
 
+        System.out.println(listing.getListingTitle() + " posted!");
         return this.listingRepository.save(listing);
     }
 
