@@ -4,6 +4,8 @@ import no.ntnu.backend.pentbrukt.Entity.Listing;
 import no.ntnu.backend.pentbrukt.Exception.ResourceNotFoundException;
 import no.ntnu.backend.pentbrukt.Repository.ListingRepository;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,12 +52,12 @@ public class ListingController {
     @PostMapping("new-listing")
     public Listing createListing(@RequestBody Listing listing) {
 
-       /* Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUser = authentication.getPrincipal().toString(); // gets the credentials used for login, email..
 
-        */
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUser = authentication.getName();
 
-        System.out.println(listing.getListingTitle() + " posted!");
+        listing.setListingSeller(currentUser);
+        System.out.println(listing.getListingSeller() + " just posted " + listing.getListingTitle() + " to PentBrukt.");
         return this.listingRepository.save(listing);
     }
 
@@ -95,6 +97,5 @@ public class ListingController {
         return response;
 
     }
-
 
 }

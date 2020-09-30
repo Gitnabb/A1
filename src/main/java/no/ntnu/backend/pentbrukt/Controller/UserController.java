@@ -49,7 +49,7 @@ public class UserController {
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setActive(1);
-        System.out.println(user.getFirstname() + " registered!");
+        System.out.println(user.getUsername() + " registered!");
         return this.userRepository.save(user);
 
     }
