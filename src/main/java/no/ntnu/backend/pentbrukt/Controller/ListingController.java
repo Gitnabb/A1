@@ -1,5 +1,6 @@
 package no.ntnu.backend.pentbrukt.Controller;
 
+import no.ntnu.backend.pentbrukt.Email.MailController;
 import no.ntnu.backend.pentbrukt.Entity.Listing;
 import no.ntnu.backend.pentbrukt.Exception.ResourceNotFoundException;
 import no.ntnu.backend.pentbrukt.Repository.ListingRepository;
@@ -18,10 +19,12 @@ import java.util.Map;
 @CrossOrigin
 public class ListingController {
 
-    private ListingRepository listingRepository;
+    private final ListingRepository listingRepository;
+    private final MailController mailController;
 
-    public ListingController(ListingRepository listingRepository) {
+    public ListingController(ListingRepository listingRepository, MailController mailController) {
         this.listingRepository = listingRepository;
+        this.mailController = mailController;
     }
 
     // Get all listings
@@ -72,7 +75,7 @@ public class ListingController {
     (@PathVariable(value = "id") Long listingid,
      @Validated @RequestBody Listing listingInfo) throws ResourceNotFoundException {
 
-        // Lookup
+        // Look up the listing in the DB
         Listing listing = listingRepository.findById(listingid)
                 .orElseThrow(() -> new ResourceNotFoundException("No listings matching ' " + listingid + " '"));
 
@@ -82,14 +85,33 @@ public class ListingController {
 
         listing.setListingSold(listingInfo.isListingSold());
 
-        // IF LISTING IS SOLD -> HIDE FROM SEARCH RESULTS...
-
-
         return ResponseEntity.ok(this.listingRepository.save(listing));
 
     }
 
 
+    @PutMapping("buy-listing/{id}")
+    public ResponseEntity<Listing> buyListing
+            (@PathVariable(value = "id") long listingid,
+             @Validated @RequestBody Listing listing) throws ResourceNotFoundException {
+
+        // Look up the listing in DB
+        Listing soldListing = listingRepository.findById(listingid)
+                .orElseThrow(() -> new ResourceNotFoundException("No listings matching ' " + listingid + " '"));
+
+        // The JSON payload must and will include a 'true' for this
+        // Essentially, a "buy" button that will send a JSON request including sold = true
+        soldListing.setListingSold(listing.isListingSold());
+
+        // REGISTER USER AS BUYER (?)
+
+
+        // SEND EMAIL TO SELLER
+        mailController.sendMail();
+
+        return ResponseEntity.ok(this.listingRepository.save(soldListing));
+
+    }
 
 
     // Delete a listing TODO: CHECK LOGIN INFO - COMPARE WITH LISTING INFO - TO BE ABLE TO DELETE
