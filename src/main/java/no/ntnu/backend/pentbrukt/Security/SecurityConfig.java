@@ -4,6 +4,7 @@ import no.ntnu.backend.pentbrukt.Repository.UserRepository;
 import no.ntnu.backend.pentbrukt.Service.UserPrincipalDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -16,7 +17,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationEn
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+//@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserPrincipalDetailsService userPrincipalDetailsService;
@@ -41,17 +42,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http
+
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 // JWT FILTERS (Authentication, Authorization)
                 .addFilter(new JwtAuthenticationFilter(authenticationManager()))
                 .addFilter(new JwtAuthorizationFilter(authenticationManager(), this.userRepository))
-                .authorizeRequests()
                 // Restrictions
-                .antMatchers("/login").permitAll();
-                //.antMatchers("/api/listings").hasRole("USERLOGGEDIN");
-
+                .authorizeRequests()
+                .antMatchers("/login").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/users/new-user").permitAll()
+                .and()
+                .authorizeRequests()
+                .antMatchers(HttpMethod.PUT, "/api/listings/edit-listing").hasRole("USERLOGGEDIN")
+                .and()
+                .authorizeRequests()
+                .antMatchers(HttpMethod.GET, "/api/listings/get-all-listings").permitAll()
+                .and()
+                .authorizeRequests()
+                .antMatchers("/api/listings/new-listing").hasRole("USERLOGGEDIN")
+                .anyRequest().authenticated();
 
     }
 

@@ -2,14 +2,11 @@ package no.ntnu.backend.pentbrukt.Entity;
 
 //import com.fasterxml.jackson.annotation.JsonFormat;
 
-import org.springframework.security.core.GrantedAuthority;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "users", schema = "public")
@@ -19,41 +16,41 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long userid;
 
-    @Column(name = "username")
-    private String userName; // THIS IS EMAIL!
+    @Column(name = "username", nullable = false)
+    private String username; // THIS IS EMAIL!
 
-    @Column(name = "password")
-    private String userPassword;
+    @Column(name = "password", nullable = false)
+    private String password;
 
     @Column(name = "firstname")
-    private String userFirstName;
+    private String firstname;
 
     @Column(name = "lastname")
-    private String userLastName;
+    private String lastname;
 
     @Column(name = "joined")
     //@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate userJoined;
 
     @Column(name = "roles")
-    private String roles;
+    private String roles = "";
 
     @Column(name = "permissions")
-    private String permissions;
+    private String permissions = "";
+
+    @Column(name = "active")
+    private int active;
 
     protected User() {
 
     }
 
-    public User(String username, String userPassword, String userFirstName, String userLastName, String roles, String permissions) {
-
-        this.userName = username;
-        this.userPassword = userPassword;
-        this.userFirstName = userFirstName;
-        this.userLastName = userLastName;
+    public User(String username, String password, String roles, String permissions) {
+        this.username = username;
+        this.password = password;
         this.roles = roles;
         this.permissions = permissions;
-
+        this.active = 1;
     }
 
     public long getUserid() {
@@ -64,44 +61,36 @@ public class User {
         this.userid = userid;
     }
 
-    public String getUserFirstName() {
-        return userFirstName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserFirstName(String userFirstName) {
-        this.userFirstName = userFirstName;
-    }
-
-    public String getUserLastName() {
-        return userLastName;
-    }
-
-    public void setUserLastName(String userLastName) {
-        this.userLastName = userLastName;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getUserPassword() {
-        return userPassword;
-    }
-
-    public void setUserPassword(String userPassword) {
-        this.userPassword = userPassword;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
-        return userPassword;
+        return password;
     }
 
     public void setPassword(String password) {
-        this.userPassword = userPassword;
+        this.password = password;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 
     public LocalDate getUserJoined() {
@@ -126,6 +115,14 @@ public class User {
 
     public void setPermissions(String permissions) {
         this.permissions = permissions;
+    }
+
+    public int isActive() {
+        return active;
+    }
+
+    public void setActive(int active) {
+        this.active = active;
     }
 
     public List<String> getRoleList() {

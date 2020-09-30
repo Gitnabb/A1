@@ -39,16 +39,22 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
         if (header == null || !header.startsWith(JwtProperties.TOKEN_PREFIX)) {
             chain.doFilter(request, response);
+            return;
         }
 
         // If there is a header, try to get the user principal from the database and authorize
         Authentication authentication = getUsernamePasswordAuthentication(request);
         SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        // Pass on the filtering
+        chain.doFilter(request, response);
+
     }
+
 
     private Authentication getUsernamePasswordAuthentication(HttpServletRequest request) {
         String token = request.getHeader(JwtProperties.HEADER_STRING)
-                .replace(JwtProperties.TOKEN_PREFIX, "");
+                .replace(JwtProperties.TOKEN_PREFIX,"");
         if (token != null) {
             // validate token
             String userName = JWT.require(HMAC512(JwtProperties.SECRETCODE.getBytes()))
@@ -60,10 +66,9 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             // If it is found, get user details and create a spring auth token username, pass roles etc..
 
             if (userName != null) {
-                User user = userRepository.findByUserName(userName);
-                UserPrincipal userPrincipal = new UserPrincipal(user);
-                UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userName, null, userPrincipal.getAuthorities());
-                return auth;
+                User user = userRepository.findByUsername(userName);
+                UserPrincipal principal = new UserPrincipal(user);
+                return new UsernamePasswordAuthenticationToken(userName, null, principal.getAuthorities());
             }
             return null;
         }

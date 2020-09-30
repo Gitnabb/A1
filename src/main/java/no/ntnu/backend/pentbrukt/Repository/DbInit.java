@@ -28,8 +28,8 @@ public class DbInit implements CommandLineRunner {
 
         // test users
 
-        User loggedInUser = new User("kjetilhammerseth@gmail.com", passwordEncoder.encode("password123"), "kjetil", "hammerseth", "USERLOGGEDIN", "ACCESS");
-        User testUser = new User("test", passwordEncoder.encode("password123"), "test", "test", "USER", "");
+        User loggedInUser = new User("kjetilhammerseth@gmail.com", passwordEncoder.encode("password123"), "USERLOGGEDIN", "ACCESS");
+        User testUser = new User("test@gmail.com", passwordEncoder.encode("password123"), "USER", "");
 
         List<User> users = Arrays.asList(loggedInUser, testUser);
 

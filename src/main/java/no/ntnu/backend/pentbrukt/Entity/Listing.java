@@ -33,6 +33,9 @@ public class Listing {
     //@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate listingPublished;
 
+    @Column(name = "listingsold")
+    private boolean listingSold;
+
     public Listing() {
         super();
     }
@@ -83,5 +86,13 @@ public class Listing {
 
     public void setListingPublished(LocalDate listingPublished) {
         this.listingPublished = listingPublished;
+    }
+
+    public boolean isListingSold() {
+        return listingSold;
+    }
+
+    public void setListingSold(boolean listingSold) {
+        this.listingSold = listingSold;
     }
 }

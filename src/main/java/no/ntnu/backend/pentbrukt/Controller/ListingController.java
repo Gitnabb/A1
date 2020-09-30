@@ -4,7 +4,8 @@ import no.ntnu.backend.pentbrukt.Entity.Listing;
 import no.ntnu.backend.pentbrukt.Exception.ResourceNotFoundException;
 import no.ntnu.backend.pentbrukt.Repository.ListingRepository;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("api")
+@RequestMapping("api/listings/")
 @CrossOrigin
 public class ListingController {
 
@@ -24,11 +25,13 @@ public class ListingController {
     }
 
     // Get all listings
-    @GetMapping("listings")
+    @GetMapping("get-all-listings")
     //@PreAuthorize("permitAll()")
     public List<Listing> getAllListings() {
 
-        return this.listingRepository.findAll();
+        return this.listingRepository.findAllByListingSold(false);
+
+        //return this.listingRepository.findAll();
 
     }
 
@@ -48,20 +51,22 @@ public class ListingController {
     // Create a listing
     //hasRole, HasAnyRole, hasAuthority, hasAnyAuthority
 
-    @PostMapping("listings")
+    @PostMapping("new-listing")
     public Listing createListing(@RequestBody Listing listing) {
 
-       /* Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUser = authentication.getPrincipal().toString(); // gets the credentials used for login, email..
 
-        */
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUser = authentication.getName();
 
+        listing.setListingSeller(currentUser);
+        listing.setListingSold(false);
+        System.out.println(listing.getListingSeller() + " just posted " + listing.getListingTitle() + " to PentBrukt.");
         return this.listingRepository.save(listing);
     }
 
 
     // Update a listing TODO: CHECK LOGIN INFO - COMPARE WITH LISTING INFO - TO BE ABLE TO EDIT LISTING
-    @PutMapping("listings/{id}")
+    @PutMapping("edit-listing/{id}")
     public ResponseEntity<Listing> updateListing
 
     (@PathVariable(value = "id") Long listingid,
@@ -75,9 +80,17 @@ public class ListingController {
         listing.setListingDesc(listingInfo.getListingDesc());
         listing.setListingPrice(listingInfo.getListingPrice());
 
+        listing.setListingSold(listingInfo.isListingSold());
+
+        // IF LISTING IS SOLD -> HIDE FROM SEARCH RESULTS...
+
+
         return ResponseEntity.ok(this.listingRepository.save(listing));
 
     }
+
+
+
 
     // Delete a listing TODO: CHECK LOGIN INFO - COMPARE WITH LISTING INFO - TO BE ABLE TO DELETE
     @DeleteMapping("listings/{id}")
@@ -95,6 +108,5 @@ public class ListingController {
         return response;
 
     }
-
 
 }
