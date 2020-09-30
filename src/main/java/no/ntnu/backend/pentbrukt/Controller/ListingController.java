@@ -29,7 +29,9 @@ public class ListingController {
     //@PreAuthorize("permitAll()")
     public List<Listing> getAllListings() {
 
-        return this.listingRepository.findAll();
+        return this.listingRepository.findAllByListingSold(false);
+
+        //return this.listingRepository.findAll();
 
     }
 
@@ -57,13 +59,14 @@ public class ListingController {
         String currentUser = authentication.getName();
 
         listing.setListingSeller(currentUser);
+        listing.setListingSold(false);
         System.out.println(listing.getListingSeller() + " just posted " + listing.getListingTitle() + " to PentBrukt.");
         return this.listingRepository.save(listing);
     }
 
 
     // Update a listing TODO: CHECK LOGIN INFO - COMPARE WITH LISTING INFO - TO BE ABLE TO EDIT LISTING
-    @PutMapping("listings/{id}")
+    @PutMapping("edit-listing/{id}")
     public ResponseEntity<Listing> updateListing
 
     (@PathVariable(value = "id") Long listingid,
@@ -77,9 +80,17 @@ public class ListingController {
         listing.setListingDesc(listingInfo.getListingDesc());
         listing.setListingPrice(listingInfo.getListingPrice());
 
+        listing.setListingSold(listingInfo.isListingSold());
+
+        // IF LISTING IS SOLD -> HIDE FROM SEARCH RESULTS...
+
+
         return ResponseEntity.ok(this.listingRepository.save(listing));
 
     }
+
+
+
 
     // Delete a listing TODO: CHECK LOGIN INFO - COMPARE WITH LISTING INFO - TO BE ABLE TO DELETE
     @DeleteMapping("listings/{id}")

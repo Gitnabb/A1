@@ -49,11 +49,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // JWT FILTERS (Authentication, Authorization)
                 .addFilter(new JwtAuthenticationFilter(authenticationManager()))
                 .addFilter(new JwtAuthorizationFilter(authenticationManager(), this.userRepository))
-                .authorizeRequests()
                 // Restrictions
-                .antMatchers("/login", "/api/listings/get-All-Listings").permitAll()
-                .antMatchers("/api/listings/new-listing").hasRole("USERLOGGEDIN")
+                .authorizeRequests()
+                .antMatchers("/login").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/users/new-user").permitAll()
+                .and()
+                .authorizeRequests()
+                .antMatchers(HttpMethod.PUT, "/api/listings/edit-listing").hasRole("USERLOGGEDIN")
+                .and()
+                .authorizeRequests()
+                .antMatchers(HttpMethod.GET, "/api/listings/get-all-listings").permitAll()
+                .and()
+                .authorizeRequests()
+                .antMatchers("/api/listings/new-listing").hasRole("USERLOGGEDIN")
                 .anyRequest().authenticated();
 
     }
