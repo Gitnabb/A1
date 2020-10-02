@@ -4,6 +4,11 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMailMessage;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
+import java.io.IOException;
 
 @Controller
 public class MailController {
@@ -14,7 +19,8 @@ public class MailController {
         this.emailConfig = emailConfig;
     }
 
-    public void sendMail() {
+    //@RequestMapping(value = "/send-email")
+    public void sendMail() /*throws AddressException, MessagingException, IOException */{
 
         // Build a mail sender
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
@@ -31,9 +37,8 @@ public class MailController {
         simpleMailMessage.setText("Noen kjøpte dingsen din! Lorem ipsum lorem ipsun");
 
         // Send email
-        mailSender.send(simpleMailMessage);
+        //mailSender.send(simpleMailMessage);
 
     }
-
 
 }

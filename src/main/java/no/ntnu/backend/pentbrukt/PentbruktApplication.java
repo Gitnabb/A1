@@ -12,3 +12,12 @@ public class PentbruktApplication {
     }
 
 }
+
+/*
+
+TODO:
+- EMAIL fix
+- PHOTOUPLOAD / attach to listing
+- Transaction entity
+
+ */
