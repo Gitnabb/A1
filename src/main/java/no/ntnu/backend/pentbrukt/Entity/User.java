@@ -45,11 +45,13 @@ public class User {
 
     }
 
-    public User(String username, String password, String roles, String permissions) {
+    public User(String firstname, String lastname, String username, String password) {
+        this.firstname = firstname;
+        this.lastname = lastname;
         this.username = username;
         this.password = password;
-        this.roles = roles;
-        this.permissions = permissions;
+        this.roles = "LOGGEDINUSER";
+        this.permissions = "ACCESS";
         this.active = 1;
     }
 
