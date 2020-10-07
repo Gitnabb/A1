@@ -49,6 +49,8 @@ public class UserController {
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setActive(1);
+        user.setRoles("LOGGEDINUSER");
+        user.setPermissions("ACCESS");
         System.out.println(user.getUsername() + " registered!");
         return this.userRepository.save(user);
 
