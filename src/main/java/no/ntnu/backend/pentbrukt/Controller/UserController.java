@@ -3,7 +3,9 @@ package no.ntnu.backend.pentbrukt.Controller;
 
 import no.ntnu.backend.pentbrukt.Entity.User;
 import no.ntnu.backend.pentbrukt.Exception.ResourceNotFoundException;
+import no.ntnu.backend.pentbrukt.Exception.UserAlreadyExistAuthenticationException;
 import no.ntnu.backend.pentbrukt.Repository.UserRepository;
+import org.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -45,15 +47,28 @@ public class UserController {
 
     // Register a user
     @PostMapping("new-user")
-    public User registerUser(@RequestBody User user) {
+    public ResponseEntity registerUser(@RequestBody User user) {
 
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setActive(1);
-        user.setRoles("LOGGEDINUSER");
-        user.setPermissions("ACCESS");
-        System.out.println(user.getUsername() + " registered!");
-        return this.userRepository.save(user);
+        User foundUser = this.userRepository.findByUsername(user.getUsername());
 
+        if (foundUser == null) {
+
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            user.setActive(1);
+            user.setRoles("LOGGEDINUSER");
+            user.setPermissions("ACCESS");
+            System.out.println(user.getUsername() + " registered!");
+            this.userRepository.save(user);
+            return ResponseEntity.ok(user);
+
+        } else {
+            /*UserAlreadyExistAuthenticationException userAlreadyExistAuthenticationException = new UserAlreadyExistAuthenticationException();
+            userAlreadyExistAuthenticationException.printStackTrace();*/
+
+            JSONObject error = new JSONObject();
+            error.put("errormessage", "Bruker allerede registrert!");
+            return ResponseEntity.badRequest().body(error.toString());
+        }
     }
 
 }
